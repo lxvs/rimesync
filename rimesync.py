@@ -23,14 +23,14 @@ class RimeSync:
         print(self.workspace)
 
     def install(self, files: set[str], directories: set[str]):
-        print("install start")
         if not self.dry_run:
+            print(f"install to: {self.rime_user_dir}")
             for f in files:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_user_dir / f
                 if not src.is_file():
                     continue
-                print(f"install [{src}] to [{dst}]")
+                print(src)
                 try:
                     copyfile(src, dst)
                 except Exception as e:
@@ -40,7 +40,7 @@ class RimeSync:
                 dst = self.rime_user_dir / d
                 if not src.is_dir():
                     continue
-                print(f"install [{src}] to [{dst}]")
+                print(src)
                 try:
                     copytree(src, dst)
                 except Exception as e:
@@ -49,34 +49,36 @@ class RimeSync:
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/deploy'], check=True)
             self.__wait(3)
         else:
+            print(f"would install to: {self.rime_user_dir}")
             for f in files:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_user_dir / f
                 if not src.is_file():
                     continue
-                print(f"would install [{src}] to [{dst}]")
+                print(src)
             for d in directories:
                 src = self.workspace / 'rimedata' / d
                 dst = self.rime_user_dir / d
                 if not src.is_dir():
                     continue
-                print(f"would install [{src}] to [{dst}]")
+                print(src)
             print("would call weasel deploy")
         print("install complete")
 
     def sync(self, files: set[str]):
-        print("sync start")
         if not self.dry_run:
+            print(f"sync with: {self.rime_sync_dir}")
             print("call weasel sync")
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/sync'], check=True)
             self.__wait(1)
 
+            print("merge userdb:")
             for f in files:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_sync_dir / f
                 if not src.is_file():
                     continue
-                print(f"merge [{src}] to [{dst}]")
+                print(src)
                 try:
                     copyfile(src, dst)
                     self.__wait(1)
@@ -87,12 +89,13 @@ class RimeSync:
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/sync'], check=True)
             self.__wait(1)
 
+            print("process and copy back userdb:")
             for f in files:
                 src = self.rime_sync_dir / f
                 dst = self.workspace / 'rimedata' / f
                 if not src.is_file():
                     continue
-                print(f"process [{src}] and write back to [{dst}]")
+                print(src)
                 try:
                     with open(dst, 'wb') as g:
                         with open(src, 'rb') as h:
@@ -101,23 +104,26 @@ class RimeSync:
                     print(f"warning: error in processing or writing {f}: {e}", file=stderr)
                     continue
         else:
+            print(f"would sync with: {self.rime_sync_dir}")
             print("would call weasel sync")
 
+            print("would merge userdb:")
             for f in files:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_sync_dir / f
                 if not src.is_file():
                     continue
-                print(f"would merge [{src}] to [{dst}]")
+                print(src)
 
             print("would call weasel sync agin")
 
+            print("process and copy back userdb:")
             for f in files:
                 src = self.rime_sync_dir / f
                 dst = self.workspace / 'rimedata' / f
                 if not src.is_file():
                     continue
-                print(f"would process [{src}] and write back to [{dst}]")
+                print(src)
         print("sync complete")
 
     @staticmethod
