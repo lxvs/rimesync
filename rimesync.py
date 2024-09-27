@@ -42,7 +42,7 @@ class RimeSync:
                     continue
                 print(src)
                 try:
-                    copytree(src, dst)
+                    copytree(src, dst, dirs_exist_ok=True)
                 except Exception as e:
                     print(f"warning: failed to install {f}: {e}", file=stderr)
             print("call weasel deploy")
