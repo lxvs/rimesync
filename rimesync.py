@@ -20,7 +20,6 @@ class RimeSync:
         self.rime_sync_dir = rime_user_dir / 'sync' / rime_user_id if rime_user_id is not None else None
         self.dry_run = dry_run
         self.workspace = workspace
-        print(self.workspace)
 
     def install(self, files: set[str], directories: set[str]):
         if not self.dry_run:
