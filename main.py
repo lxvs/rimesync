@@ -46,7 +46,7 @@ def main():
     if args.install:
         yaml_files = {f(x) for x in config.yamls for f in (lambda x: f'{x}.yaml', lambda x: f'{x}.custom.yaml')}
         schema_files = {f(x) for x in config.schemas for f in (lambda x: f'{x}.custom.yaml', lambda x: f'{x}.dict.yaml', lambda x: f'{x}.schema.yaml')}
-        rs.install(yaml_files | schema_files | config.include - config.exclude)
+        rs.install(yaml_files | schema_files | config.include - config.exclude, config.directories - config.exclude)
 
     if args.sync:
         rs.sync({f'{x}.userdb.txt' for x in config.schemas} - config.exclude)

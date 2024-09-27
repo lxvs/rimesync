@@ -2,7 +2,7 @@ from sys import stderr
 from time import sleep
 from pathlib import Path
 from subprocess import run
-from shutil import copyfile
+from shutil import copyfile, copytree
 
 __version__ = "0.1.0"
 
@@ -22,7 +22,7 @@ class RimeSync:
         self.workspace = workspace
         print(self.workspace)
 
-    def install(self, files: set[str]):
+    def install(self, files: set[str], directories: set[str]):
         print("install start")
         if not self.dry_run:
             for f in files:
@@ -36,6 +36,17 @@ class RimeSync:
                     copyfile(src, dst)
                 except Exception as e:
                     print(f"warning: failed to install {f}: {e}", file=stderr)
+            for d in directories:
+                src = self.workspace / 'rimedata' / d
+                dst = self.rime_user_dir / d
+                if not src.is_dir():
+                    print(f"warning: not a directory, skipped: {src}", file=stderr)
+                    continue
+                print(f"install [{src}] to [{dst}]")
+                try:
+                    copytree(src, dst)
+                except Exception as e:
+                    print(f"warning: failed to install {f}: {e}", file=stderr)
             print("call weasel deploy")
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/deploy'], check=True)
             self.__wait(3)
@@ -45,6 +56,13 @@ class RimeSync:
                 dst = self.rime_user_dir / f
                 if not src.is_file():
                     print(f"warning: not a file, skipped: {src}", file=stderr)
+                    continue
+                print(f"would install [{src}] to [{dst}]")
+            for d in directories:
+                src = self.workspace / 'rimedata' / d
+                dst = self.rime_user_dir / d
+                if not src.is_dir():
+                    print(f"warning: not a directory, skipped: {src}", file=stderr)
                     continue
                 print(f"would install [{src}] to [{dst}]")
             print("would call weasel deploy")
