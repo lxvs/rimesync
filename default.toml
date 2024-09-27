@@ -1,0 +1,29 @@
+#
+# default.toml
+#
+# This is the default configuration file, can be overridden by setting same
+# items in default.custom.toml file.
+#
+
+rime_user_dir = "$APPDATA/Rime"
+
+# Read from installation.yaml if commented
+#rime_user_id = f3ba4f07-4c31-4bc6-a748-657750c400e8
+
+# Weasel version will be read from installation.yaml if commented
+#rime_install_dir = "${ProgramFiles(x86)}/Rime/weasel-0.16.1"
+
+# including: *.yaml, *.custom.yaml
+yamls = [ "default", "weasel", "symbols", "symbols_caps_v", "symbols_v" ]
+
+# including: *.custom.yaml, *.dict.yaml, *.schema.yaml, *.userdb.txt
+schemas = [ "double_pinyin_flypy", "luna_pinyin", "melt_eng", "pinyin_simp", "radical_pinyin", "rime_ice", "wubi86" ]
+
+# directories to install
+directories = [ 'cn_dicts', 'en_dicts', 'lua', 'opencc' ]
+
+# full name of additional files to install
+include = [ "rime.lua" ]
+
+# full name of files excluded from both installing and syncing
+exclude = []
