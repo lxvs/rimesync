@@ -47,7 +47,7 @@ class RimeSync:
                     print(f"warning: failed to install {f}: {e}", file=stderr)
             print("call weasel deploy")
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/deploy'], check=True)
-            self.__wait(3)
+            self.__wait(1)
         else:
             print(f"would install to: {self.rime_user_dir}")
             for f in files:
