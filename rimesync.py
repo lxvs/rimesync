@@ -29,7 +29,6 @@ class RimeSync:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_user_dir / f
                 if not src.is_file():
-                    print(f"warning: not a file, skipped: {src}", file=stderr)
                     continue
                 print(f"install [{src}] to [{dst}]")
                 try:
@@ -40,7 +39,6 @@ class RimeSync:
                 src = self.workspace / 'rimedata' / d
                 dst = self.rime_user_dir / d
                 if not src.is_dir():
-                    print(f"warning: not a directory, skipped: {src}", file=stderr)
                     continue
                 print(f"install [{src}] to [{dst}]")
                 try:
@@ -55,14 +53,12 @@ class RimeSync:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_user_dir / f
                 if not src.is_file():
-                    print(f"warning: not a file, skipped: {src}", file=stderr)
                     continue
                 print(f"would install [{src}] to [{dst}]")
             for d in directories:
                 src = self.workspace / 'rimedata' / d
                 dst = self.rime_user_dir / d
                 if not src.is_dir():
-                    print(f"warning: not a directory, skipped: {src}", file=stderr)
                     continue
                 print(f"would install [{src}] to [{dst}]")
             print("would call weasel deploy")
@@ -79,7 +75,6 @@ class RimeSync:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_sync_dir / f
                 if not src.is_file():
-                    print(f"warning: not a file, skipped: {src}", file=stderr)
                     continue
                 print(f"merge [{src}] to [{dst}]")
                 try:
@@ -112,7 +107,6 @@ class RimeSync:
                 src = self.workspace / 'rimedata' / f
                 dst = self.rime_sync_dir / f
                 if not src.is_file():
-                    print(f"warning: not a file, skipped: {src}", file=stderr)
                     continue
                 print(f"would merge [{src}] to [{dst}]")
 
