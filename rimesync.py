@@ -46,7 +46,7 @@ class RimeSync:
                     print(f"warning: failed to install {f}: {e}", file=stderr)
             print("call weasel deploy")
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/deploy'], check=True)
-            self.__wait(1)
+            sleep(1)
         else:
             print(f"would install to: {self.rime_user_dir}")
             for f in files:
@@ -69,7 +69,7 @@ class RimeSync:
             print(f"sync with: {self.rime_sync_dir}")
             print("call weasel sync")
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/sync'], check=True)
-            self.__wait(1)
+            sleep(1)
 
             print("merge userdb:")
             for f in files:
@@ -80,13 +80,13 @@ class RimeSync:
                 print(src)
                 try:
                     copyfile(src, dst)
-                    self.__wait(1)
+                    sleep(1)
                 except Exception as e:
                     print(f"warning: failed to copy {f}: {e}", file=stderr)
 
             print("call weasel sync again")
             run([self.rime_install_dir / 'WeaselDeployer.exe', '/sync'], check=True)
-            self.__wait(1)
+            sleep(1)
 
             print("process and copy back userdb:")
             for f in files:
@@ -124,10 +124,3 @@ class RimeSync:
                     continue
                 print(src)
         print("sync complete")
-
-    @staticmethod
-    def __wait(sec: int, prompt: str = "waiting"):
-        print(f"{prompt} ", end='', flush=True)
-        for t in f"{' '.join('.' * sec)}\n":
-            sleep(0.5)
-            print(t, end='', flush=True)
